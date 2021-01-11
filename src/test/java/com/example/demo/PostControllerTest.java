@@ -38,14 +38,13 @@ public class PostControllerTest {
                 .andExpect(content().string("Test title"));
     }
 
+
     @Test
     public void getPosts() throws Exception {
-        Post post = new Post();
-        post.setTitle("Test title");
-        postRepository.save(post);
+        createPosts();
 
         mockMvc.perform(get("/posts/")
-                .param("page","0")
+                .param("page","3")
                 .param("size","10")
                 .param("sort","created,desc")
                 .param("sort","title"))
@@ -55,4 +54,15 @@ public class PostControllerTest {
                     jsonPath("$.content[0].title", is("Test title"));
                 });
     }
+
+    public void createPosts() {
+        int postsCount = 100;
+        while(postsCount > 0){
+            Post post = new Post();
+            post.setTitle("Test title");
+            postRepository.save(post);
+            postsCount--;
+        }
+    }
+
 }
