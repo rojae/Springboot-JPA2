@@ -21,4 +21,12 @@ public class Post {
     private Date created;
 
 
+    @Override
+    public String toString() {
+        return "Post{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", created=" + created +
+                '}';
+    }
 }
