@@ -9,6 +9,8 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
+// namedQuery는 entity 클래스가 너저분해짐, repository에 query를 사용하자
+@NamedQuery(name = "Post.findByTitle", query = "SELECT p FROM Post AS p WHERE p.title = ?1")
 public class Post {
 
     @Id

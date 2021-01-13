@@ -42,24 +42,36 @@ public class PostControllerTest {
         assertThat(entityManager.contains(post)).isTrue();
         assertThat(savedPost == post).isTrue();
 
-        Post postUpdate = new Post();
-        postUpdate.setId(post.getId());
-        postUpdate.setTitle("test2");
-        Post savedUpdate = postRepository.save(postUpdate);         // merge
-
-        assertThat(entityManager.contains(savedUpdate)).isTrue();
-        assertThat(entityManager.contains(postUpdate)).isFalse();   // persist가 아닌 merge가 되었기 때문에, 42번줄과는 다르다.
-        assertThat(savedUpdate == postUpdate).isFalse();     // savedPost가 merge 되어, 다름
-
-        // manage되고 있는 persist 상태의 객체를 수정해보자
-        // 결과 : update가 된다
-        savedUpdate.setTitle("update");
+        post.setTitle("update1");
 
         List<Post> all = postRepository.findAll();
-
-        all.forEach(System.out::println);
-
         assertThat(all.size()).isEqualTo(1);
+    }
+
+    @Test
+    public void findByTitleStartWith(){
+        // When
+        Post post = new Post();
+        post.setTitle("test title");
+        postRepository.save(post);
+
+        // Then
+        List<Post> list = postRepository.findByTitleStartingWith("test");
+        list.forEach(System.out::println);
+        assertThat(list.size()).isEqualTo(1);
+    }
+
+    @Test
+    public void findByTitle(){
+        // When
+        Post post = new Post();
+        post.setTitle("test title");
+        postRepository.save(post);
+
+        // Then
+        List<Post> list = postRepository.findByTitle("test title");
+        list.forEach(System.out::println);
+        assertThat(list.size()).isEqualTo(1);
     }
 
 }
