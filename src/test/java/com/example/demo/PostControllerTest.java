@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -61,17 +63,58 @@ public class PostControllerTest {
         assertThat(list.size()).isEqualTo(1);
     }
 
+    // queryMethod sort test
     @Test
-    public void findByTitle(){
+    public void findByTitleStartingWithSort(){
         // When
         Post post = new Post();
         post.setTitle("test title");
         postRepository.save(post);
 
+        Post post2 = new Post();
+        post2.setTitle("taaaa");
+        postRepository.save(post2);
+
         // Then
-        List<Post> list = postRepository.findByTitle("test title");
+        List<Post> list = postRepository.findByTitleStartingWith("t", Sort.by("title"));
         list.forEach(System.out::println);
-        assertThat(list.size()).isEqualTo(1);
+        assertThat(list.size()).isEqualTo(2);
+    }
+
+    // jpql queryMethod sort test
+    @Test
+    public void findAll(){
+        // When
+        Post post = new Post();
+        post.setTitle("a");
+        postRepository.save(post);
+
+        Post post2 = new Post();
+        post2.setTitle("b");
+        postRepository.save(post2);
+
+        // Then
+        List<Post> list = postRepository.findAll(Sort.by("pTitle"));
+        list.forEach(System.out::println);
+        assertThat(list.size()).isEqualTo(2);
+    }
+
+    // jpql queryMethod unsafe case
+    @Test
+    public void unsafe(){
+        // When
+        Post post = new Post();
+        post.setTitle("a");
+        postRepository.save(post);
+
+        Post post2 = new Post();
+        post2.setTitle("bbbbb");
+        postRepository.save(post2);
+
+        // Then
+        List<Post> list = postRepository.findAll(JpaSort.unsafe(Sort.Direction.DESC, "LENGTH(title)"));
+        list.forEach(System.out::println);
+        assertThat(list.size()).isEqualTo(2);
     }
 
 }
