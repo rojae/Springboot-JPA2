@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -115,6 +116,19 @@ public class PostControllerTest {
         List<Post> list = postRepository.findAll(JpaSort.unsafe(Sort.Direction.DESC, "LENGTH(title)"));
         list.forEach(System.out::println);
         assertThat(list.size()).isEqualTo(2);
+    }
+
+    @Test
+    public void updatePost(){
+        // When
+        Post post = new Post();
+        post.setTitle("title");
+        Post savedPost = postRepository.save(post);
+
+        // When
+        savedPost.setTitle("update title");
+        List<Post> all = postRepository.findAll();
+        assertThat(all.size()).isEqualTo(1);
     }
 
 }
