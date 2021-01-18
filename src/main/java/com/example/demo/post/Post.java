@@ -1,5 +1,6 @@
 package com.example.demo.post;
 
+import com.example.demo.comment.Comment;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,7 +22,6 @@ public class Post {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date created;
-
 
     @Override
     public String toString() {
