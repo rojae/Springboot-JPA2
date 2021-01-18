@@ -60,7 +60,7 @@ public class CommentControllerTest {
         });
     }
 
-    @Test
+   /* @Test
     public void closedProjection() {
         Post post = new Post();
         post.setTitle("Test title");
@@ -74,7 +74,22 @@ public class CommentControllerTest {
         List<CommentSummary> byId = commentRepository.findByPost_Id(1l);
         assertThat(byId.size()).isEqualTo(1);
         byId.forEach(x -> System.out.println(x.getComment()));
-    }
+    }*/
 
+    @Test
+    public void openProjection() {
+        Post post = new Post();
+        post.setTitle("Test title");
+        Post savedPost = postRepository.save(post);
+
+        Comment comment = new Comment();
+        comment.setComment("Test comment");
+        comment.setPost(savedPost);
+        commentRepository.save(comment);
+
+        commentRepository.findByPost_Id(1l).forEach(x -> {
+            System.out.println(x.getVotes());
+        });
+    }
 
 }
