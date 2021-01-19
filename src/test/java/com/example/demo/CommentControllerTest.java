@@ -94,7 +94,8 @@ public class CommentControllerTest {
         });
 
     }
-    // closed projection에서 getVotes를 확장하여 사용함
+
+    // closed projection에서 getComment를 확장하여 사용함
     @Test
     public void projection2() {
         Post post = new Post();
