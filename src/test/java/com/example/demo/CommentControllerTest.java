@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import com.example.demo.comment.Comment;
+import com.example.demo.comment.CommentOnly;
 import com.example.demo.comment.CommentRepository;
 import com.example.demo.comment.CommentSummary;
 import com.example.demo.post.Post;
@@ -76,8 +77,9 @@ public class CommentControllerTest {
         byId.forEach(x -> System.out.println(x.getComment()));
     }*/
 
+    // closed projection에서 getVotes를 확장하여 사용함
     @Test
-    public void openProjection() {
+    public void projection1() {
         Post post = new Post();
         post.setTitle("Test title");
         Post savedPost = postRepository.save(post);
@@ -87,8 +89,24 @@ public class CommentControllerTest {
         comment.setPost(savedPost);
         commentRepository.save(comment);
 
-        commentRepository.findByPost_Id(1l).forEach(x -> {
+        commentRepository.findByPost_Id(1l, CommentSummary.class).forEach(x -> {
             System.out.println(x.getVotes());
+        });
+
+    }
+    // closed projection에서 getVotes를 확장하여 사용함
+    @Test
+    public void projection2() {
+        Post post = new Post();
+        post.setTitle("Test title");
+        Post savedPost = postRepository.save(post);
+
+        Comment comment = new Comment();
+        comment.setComment("Test comment");
+        comment.setPost(savedPost);
+        commentRepository.save(comment);
+        commentRepository.findByPost_Id(1l, CommentOnly.class).forEach(x -> {
+            System.out.println(x.getComment());
         });
     }
 
