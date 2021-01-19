@@ -20,6 +20,8 @@ public class Comment {
 
     private int down;
 
+    private boolean isBest;
+
     private String comment;
 
     @ManyToOne(fetch = FetchType.EAGER)

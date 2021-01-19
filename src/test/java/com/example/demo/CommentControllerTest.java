@@ -1,15 +1,14 @@
 package com.example.demo;
 
-import com.example.demo.comment.Comment;
-import com.example.demo.comment.CommentOnly;
-import com.example.demo.comment.CommentRepository;
-import com.example.demo.comment.CommentSummary;
+import com.example.demo.comment.*;
 import com.example.demo.post.Post;
 import com.example.demo.post.PostRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
@@ -111,4 +110,20 @@ public class CommentControllerTest {
         });
     }
 
+    @Test
+    public void isBest(){
+        commentRepository.findAll(CommentSpec.isBest());
+    }
+
+    @Test
+    public void isGood(){
+        commentRepository.findAll(CommentSpec.isGood());
+    }
+
+    @Test
+    public void specPagable(){
+        Page<Comment> page
+                = commentRepository.findAll(CommentSpec.isBest()
+                    .or(CommentSpec.isGood()), PageRequest.of(0, 10));
+    }
 }
