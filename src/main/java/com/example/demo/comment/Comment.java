@@ -49,4 +49,9 @@ public class Comment {
     @ManyToOne(fetch = FetchType.EAGER)
     private Post post;
 
+    // auditAware 대신 @PrePersist를 사용할 수 있다.
+    @PrePersist
+    public void prePersist(){
+        System.out.println("pre Persist is called");
+    }
 }
